@@ -1,0 +1,39 @@
+GET http://localhost:8080/recipe/get/1
+
+###
+POST http://localhost:8080/recipe/create
+Content-Type: application/json
+
+{
+  "name": "Наименование 50",
+  "timeReady": 20,
+  "ingredients": [
+    {
+      "name": "Ингредиент 1",
+      "count": 8,
+      "measureUnit": "шт."
+    },
+    {
+      "name": "Ингредиент 2",
+      "count": 300,
+      "measureUnit": "гр."
+    }
+  ],
+  "steps": [
+    "Step 1",
+    "Step 2",
+    "Step 3"
+  ]
+}
+
+###
+POST http://localhost:8080/ingredient/create
+Content-Type: application/json
+
+{
+  "name": "Ингредиент 2",
+  "count": 200,
+  "measureUnit": "гр."
+}
+###
+GET http://localhost:8080/ingredient/get/1

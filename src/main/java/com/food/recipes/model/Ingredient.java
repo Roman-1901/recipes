@@ -1,4 +1,5 @@
 package com.food.recipes.model;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

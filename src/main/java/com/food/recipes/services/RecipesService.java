@@ -3,10 +3,10 @@ package com.food.recipes.services;
 import com.food.recipes.model.Ingredient;
 import com.food.recipes.model.Recipe;
 import org.springframework.stereotype.Service;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
 
 
 @Service
@@ -51,7 +51,7 @@ public class RecipesService {
     }
 
     //Поиск рецепта по id ингредиента
-    public Optional<Recipe> getRecipeByIdIngredient (Long id) {
-      return recipeMap.values().stream().filter(recipe -> recipe.getIngredients().containsKey(id)).findFirst();
+    public Optional<Recipe> getRecipeByIdIngredient(Long id) {
+        return recipeMap.values().stream().filter(recipe -> recipe.getIngredients().containsKey(id)).findFirst();
     }
 }

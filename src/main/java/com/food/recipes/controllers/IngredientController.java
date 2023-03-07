@@ -1,8 +1,10 @@
 package com.food.recipes.controllers;
+
 import com.food.recipes.model.Ingredient;
 import com.food.recipes.services.IngredientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Map;
 
 @RestController
@@ -27,7 +29,7 @@ public class IngredientController {
     //Вывод всех ингредиентов
     @GetMapping
     public ResponseEntity<Map<Long, Ingredient>> showIngredients() {
-       Map<Long, Ingredient> getIngredients = ingredientService.getAllIngredients();
+        Map<Long, Ingredient> getIngredients = ingredientService.getAllIngredients();
         if (getIngredients == null) {
             return ResponseEntity.notFound().build();
         }

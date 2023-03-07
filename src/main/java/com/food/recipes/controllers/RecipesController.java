@@ -4,19 +4,21 @@ import com.food.recipes.services.RecipesService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/recipe")
 public class RecipesController {
-    private RecipesService recipesService;
+    private final RecipesService recipesService;
 
     public RecipesController(RecipesService recipesService) {
         this.recipesService = recipesService;
     }
 
-
-    @GetMapping("/get/{recipeNum}")
+    //Поиск рецепта по id
+    @GetMapping("/{recipeNum}")
     public ResponseEntity<Recipe> recipeGet(@PathVariable long recipeNum) {
         Recipe recipe = recipesService.getRecipe(recipeNum);
         if (recipe == null) {
@@ -25,9 +27,49 @@ public class RecipesController {
         return ResponseEntity.ok(recipe);
     }
 
-    @PostMapping("/create")
-    public String createRecipe(@RequestBody Recipe recipe) {
-        return recipesService.addRecipe(recipe);
+    //Поиск рецепта по id ингредиента
+    @GetMapping("/by/")
+    public ResponseEntity<Optional<Recipe>> recipeGetByIdIngredient(@RequestParam long ingredient) {
+        Optional<Recipe> recipe = recipesService.getRecipeByIdIngredient(ingredient);
+        if (recipe.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(recipe);
     }
+
+    //Создание рецепта
+    @PostMapping()
+    public ResponseEntity<String> createRecipe(@RequestBody Recipe recipe) {
+        String create = recipesService.addRecipe(recipe);
+        return ResponseEntity.ok().body(create);
+    }
+
+    //Редактирование рецепта
+    @PutMapping("/{id}")
+    public ResponseEntity<Recipe> putRecipe(@PathVariable long id, @RequestBody Recipe recipe) {
+        Recipe putRecipe = recipesService.editRecipe(id, recipe);
+        if (putRecipe == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(putRecipe);
+    }
+
+    //Вывод всех рецептов
+    @GetMapping()
+    public ResponseEntity<Map<Long, Recipe>> showRecipes() {
+        Map<Long, Recipe> recipes = recipesService.getAllRecipes();
+        if (recipes == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(recipes);
+    }
+
+    //Удаление рецепта по id
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> deleteRecipe(@PathVariable long id) {
+        String delete = recipesService.removeRecipe(id);
+        return ResponseEntity.ok().body(delete);
+    }
+
 
 }

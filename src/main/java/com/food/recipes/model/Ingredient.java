@@ -1,9 +1,7 @@
 package com.food.recipes.model;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.Objects;
 
 @Data
 @AllArgsConstructor

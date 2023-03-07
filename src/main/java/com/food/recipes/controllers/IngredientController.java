@@ -1,6 +1,5 @@
 package com.food.recipes.controllers;
 import com.food.recipes.model.Ingredient;
-import com.food.recipes.model.Recipe;
 import com.food.recipes.services.IngredientService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

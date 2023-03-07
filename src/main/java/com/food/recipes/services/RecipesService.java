@@ -54,5 +54,4 @@ public class RecipesService {
     public Optional<Recipe> getRecipeByIdIngredient (Long id) {
       return recipeMap.values().stream().filter(recipe -> recipe.getIngredients().containsKey(id)).findFirst();
     }
-
 }

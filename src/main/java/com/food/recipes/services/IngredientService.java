@@ -43,5 +43,4 @@ public class IngredientService {
         }
         return "Ингредиент с данным id не найден";
     }
-
 }

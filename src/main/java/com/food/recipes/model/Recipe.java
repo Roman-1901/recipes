@@ -22,5 +22,4 @@ public class Recipe {
         }
         this.steps = steps;
     }
-
 }

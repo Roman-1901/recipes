@@ -9,5 +9,6 @@ public class Ingredient {
     private final String name;
     private final int count;
     private final String measureUnit;
+
 }
 

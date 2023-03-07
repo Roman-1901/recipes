@@ -70,5 +70,4 @@ public class RecipesController {
         return ResponseEntity.ok().body(delete);
     }
 
-
 }

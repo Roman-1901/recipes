@@ -2,6 +2,7 @@ package com.food.recipes.services;
 
 import com.food.recipes.model.Ingredient;
 import com.food.recipes.model.Recipe;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -47,11 +48,13 @@ public class RecipesService {
             recipeMap.remove(id);
             return "Рецепт удален";
         }
-        return "Рецепт с данным id не найден";
+        return null;
     }
 
+
+
     //Поиск рецепта по id ингредиента
-    public Optional<Recipe> getRecipeByIdIngredient(Long id) {
-        return recipeMap.values().stream().filter(recipe -> recipe.getIngredients().containsKey(id)).findFirst();
-    }
+//    public Optional<Recipe> getRecipeByIdIngredient(Long id) {
+//        return recipeMap.values().stream().filter(recipe -> recipe.getIngredients().containsKey(id)).findFirst();
+//    }
 }

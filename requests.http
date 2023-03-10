@@ -47,7 +47,7 @@ GET http://localhost:8080/recipe/1
 ###
 GET http://localhost:8080/recipe
 ###
-GET http://localhost:8080/recipe/by/?ingredient=1
+GET http://localhost:8080/recipe/by/?ingredient=5
 ###
 DELETE http://localhost:8080/recipe/1
 
@@ -60,16 +60,16 @@ POST http://localhost:8080/ingredient/
 Content-Type: application/json
 
 {
-  "name": "Ингредиент 4",
+  "name": "Ингредиент 1",
   "count": 5,
   "measureUnit": "шт."
 }
 ###
-GET http://localhost:8080/ingredient/3
+GET http://localhost:8080/ingredient/1
 ###
 GET http://localhost:8080/ingredient
 ###
-PUT http://localhost:8080/ingredient/3
+PUT http://localhost:8080/ingredient/2
 Content-Type: application/json
 
 {
@@ -78,4 +78,4 @@ Content-Type: application/json
   "measureUnit": "шт."
 }
 ###
-DELETE  http://localhost:8080/ingredient/2
+DELETE  http://localhost:8080/ingredient/1

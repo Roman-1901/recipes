@@ -1,6 +1,8 @@
 package com.food.recipes.services;
 
 import com.food.recipes.model.Ingredient;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -43,6 +45,6 @@ public class IngredientService {
             ingredientMap.remove(id);
             return "Ингредиент удален";
         }
-        return "Ингредиент с данным id не найден";
+        return null;
     }
 }

@@ -2,6 +2,9 @@ package com.food.recipes.services.FileServices;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 @Service
 public class FileServiceRecipe extends FileService {
@@ -17,5 +20,13 @@ public class FileServiceRecipe extends FileService {
 
     public String readFromFile() {
         return read(Path.of(fileFolder, fileName));
+    }
+
+    public File getDataFile() {
+        return getFile(fileFolder, fileName);
+    }
+
+    public void cleanFile() {
+        clean(Path.of(fileFolder, fileName));
     }
 }

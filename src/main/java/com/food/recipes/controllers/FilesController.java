@@ -2,6 +2,9 @@ package com.food.recipes.controllers;
 
 import com.food.recipes.services.FileServices.FileServiceIngredient;
 import com.food.recipes.services.FileServices.FileServiceRecipe;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +18,7 @@ import java.io.*;
 
 @RestController
 @RequestMapping("/files")
+@Tag(name = "Файлы", description = "Импорт/Экспорт файлов")
 public class FilesController {
     private final FileServiceRecipe fileServiceRecipe;
     private final FileServiceIngredient fileServiceIngredient;
@@ -26,6 +30,7 @@ public class FilesController {
 
 
     @GetMapping(value = "/export/recipe")
+    @Operation(summary = "Экспорт файла рецептов в формате .json")
     public ResponseEntity<InputStreamResource> downloadFile() throws FileNotFoundException {
         File file = fileServiceRecipe.getDataFile();
         if (file.exists()) {
@@ -33,7 +38,7 @@ public class FilesController {
             return ResponseEntity.ok()
                     .contentType(MediaType.APPLICATION_JSON)
                     .contentLength(file.length())
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename = \"Recipes.json\"")
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"Recipes.json\"")
                     .body(resource);
         } else {
             return ResponseEntity.noContent().build();
@@ -41,6 +46,7 @@ public class FilesController {
     }
 
     @PostMapping(value = "/import/recipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Импорт файла рецептов в формате .json")
     public ResponseEntity<Void> uploadFile(@RequestParam MultipartFile multipartFile) {
         fileServiceRecipe.cleanFile();
         File file = fileServiceRecipe.getDataFile();
@@ -54,6 +60,7 @@ public class FilesController {
     }
 
     @PostMapping(value = "/import/ingredient", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Импорт файла ингредиентов в формате .json")
     public ResponseEntity<Void> uploadFileIngredient(@RequestParam MultipartFile multipartFile) {
         fileServiceIngredient.cleanFile();
         File file = fileServiceIngredient.getDataFile();

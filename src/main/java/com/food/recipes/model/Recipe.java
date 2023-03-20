@@ -17,4 +17,12 @@ public class Recipe {
     private int timeReady;
     private ArrayList<Ingredient> ingredients;
     private ArrayList<String> steps;
+
+    @Override
+    public String toString() {
+        return  name + "\n" +
+                "Время приготовления: " + timeReady + "\n" +
+                "Ингредиенты: \n" + ingredients + "\n" +
+                "Инструкция приготовления: \n" + steps + "\n" + "\n";
+    }
 }

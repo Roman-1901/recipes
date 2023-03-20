@@ -6,9 +6,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.food.recipes.model.Recipe;
 import com.food.recipes.services.FileServices.FileServiceRecipe;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.PostConstruct;
+import java.io.File;
+import java.io.IOException;
+import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -47,7 +54,7 @@ public class RecipesService {
         return null;
     }
 
-    //Вывод всех рецептов
+
     public Map<Long, Recipe> getAllRecipes() {
         return recipeMap;
     }
@@ -63,11 +70,6 @@ public class RecipesService {
     }
 
 
-    //Поиск рецепта по id ингредиента
-//    public Optional<Recipe> getRecipeByIdIngredient(Long id) {
-//        return recipeMap.values().stream().filter(recipe -> recipe.getIngredients().containsKey(id)).findFirst();
-//    }
-
 
     private void saveToFile() {
         try {
@@ -76,6 +78,17 @@ public class RecipesService {
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public Path saveTxt() throws IOException {
+        Path path = fileService.createTempFile("report");
+        for (Recipe recipe : recipeMap.values()) {
+            try(Writer writer = Files.newBufferedWriter(path, StandardOpenOption.APPEND)) {
+                writer.append(recipe.toString());
+                writer.append("\n");
+            }
+        }
+        return path;
     }
 
 @PostConstruct

@@ -29,4 +29,13 @@ public class FileServiceRecipe extends FileService {
     public void cleanFile() {
         clean(Path.of(fileFolder, fileName));
     }
+
+    public Path createTempFile(String suffix) {
+        try {
+            return Files.createTempFile(Path.of(fileFolder), "tempFile", suffix);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

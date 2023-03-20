@@ -2,6 +2,7 @@ package com.food.recipes.controllers;
 
 import com.food.recipes.services.FileServices.FileServiceIngredient;
 import com.food.recipes.services.FileServices.FileServiceRecipe;
+import com.food.recipes.services.RecipesService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 @RestController
 @RequestMapping("/files")
@@ -22,10 +25,12 @@ import java.io.*;
 public class FilesController {
     private final FileServiceRecipe fileServiceRecipe;
     private final FileServiceIngredient fileServiceIngredient;
+    private final RecipesService recipesService;
 
-    public FilesController(FileServiceRecipe fileService, FileServiceIngredient fileServiceIngredient) {
+    public FilesController(FileServiceRecipe fileService, FileServiceIngredient fileServiceIngredient, RecipesService recipesService) {
         this.fileServiceRecipe = fileService;
         this.fileServiceIngredient = fileServiceIngredient;
+        this.recipesService = recipesService;
     }
 
 
@@ -44,6 +49,27 @@ public class FilesController {
             return ResponseEntity.noContent().build();
         }
     }
+
+    @GetMapping(value = "/export/report")
+    @Operation(summary = "Экспорт файла рецептов в формате .txt")
+    public ResponseEntity<Object> downloadFileTXt() {
+        try {
+            Path path = recipesService.saveTxt();
+            if (Files.size(path) == 0) {
+                return ResponseEntity.noContent().build();
+            }
+            InputStreamResource resource = new InputStreamResource(new FileInputStream(path.toFile()));
+            return ResponseEntity.ok()
+                    .contentType(MediaType.TEXT_PLAIN)
+                    .contentLength(Files.size(path))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"report.txt\"")
+                    .body(resource);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(e.toString());
+        }
+    }
+
 
     @PostMapping(value = "/import/recipe", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Импорт файла рецептов в формате .json")

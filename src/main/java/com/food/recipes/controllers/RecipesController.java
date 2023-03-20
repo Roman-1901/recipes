@@ -2,6 +2,7 @@ package com.food.recipes.controllers;
 
 import com.food.recipes.model.Ingredient;
 import com.food.recipes.model.Recipe;
+import com.food.recipes.services.FileServices.FileServiceRecipe;
 import com.food.recipes.services.RecipesService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -12,9 +13,19 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -25,7 +36,7 @@ import java.util.Optional;
 public class RecipesController {
     private final RecipesService recipesService;
 
-    public RecipesController(RecipesService recipesService) {
+    public RecipesController(RecipesService recipesService, FileServiceRecipe fileServiceRecipe) {
         this.recipesService = recipesService;
     }
 
@@ -43,12 +54,17 @@ public class RecipesController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
+                    description = "Рецепт найден",
                     content = {
                             @Content(
                                     mediaType = "application/json",
                                     array = @ArraySchema(schema = @Schema(implementation = Recipe.class))
                             )
                     }
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Страница отсутствует"
             )
     }
     )
@@ -116,6 +132,8 @@ public class RecipesController {
             )
     }
     )
+
+
     public ResponseEntity<Map<Long, Recipe>> showRecipes() {
         Map<Long, Recipe> recipes = recipesService.getAllRecipes();
         if (recipes == null) {
@@ -144,14 +162,6 @@ public class RecipesController {
     }
 
 
-    //Поиск рецепта по id ингредиента
-//    @GetMapping("/by/")
-//    public ResponseEntity<Optional<Recipe>> recipeGetByIdIngredient(@RequestParam long ingredient) {
-//        Optional<Recipe> recipe = recipesService.getRecipeByIdIngredient(ingredient);
-//        if (recipe.isEmpty()) {
-//            return ResponseEntity.notFound().build();
-//        }
-//        return ResponseEntity.ok(recipe);
-//    }
 
-}
+
+    }

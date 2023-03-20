@@ -1,10 +1,16 @@
 package com.food.recipes.controllers;
 
+import com.food.recipes.model.Recipe;
 import com.food.recipes.services.FileServices.FileServiceIngredient;
 import com.food.recipes.services.FileServices.FileServiceRecipe;
 import com.food.recipes.services.RecipesService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.io.IOUtils;
 import org.springframework.core.io.InputStreamResource;
@@ -52,6 +58,21 @@ public class FilesController {
 
     @GetMapping(value = "/export/report")
     @Operation(summary = "Экспорт файла рецептов в формате .txt")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200", description = "всё хорошо, запрос выполнился"
+            ),
+            @ApiResponse(
+                    responseCode = "400", description = "есть ошибка в параметрах запроса"
+            ),
+            @ApiResponse(
+                    responseCode = "404", description = "URL неверный или такого действия нет в веб-приложении"
+            ),
+            @ApiResponse(
+                    responseCode = "500", description = "во время выполнения запроса произошла ошибка на сервере"
+            )
+    }
+    )
     public ResponseEntity<Object> downloadFileTXt() {
         try {
             Path path = recipesService.saveTxt();
